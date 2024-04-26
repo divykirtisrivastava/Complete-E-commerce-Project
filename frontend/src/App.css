@@ -1,0 +1,92 @@
+#main_div{
+  width: 500px;
+ margin-left: 500px;
+  margin-top: 200px;
+ }
+ #maincard{
+  display: flex;
+ }
+
+ #main{
+  width: 550px;
+  /* box-shadow: 5px 5px 5px black; */
+  border: 2px solid black;
+}
+#card_div_p{
+  font-size: 20px;
+  display: block;
+}
+#card{
+   display: flex;
+  position: absolute;
+  left: 300px;
+  top: 100px;
+  flex-wrap: wrap;
+  gap: 50px;
+ }
+ #sidebar{
+  position: fixed;
+  top: 50px;
+ }
+ #sidebar-local{
+  margin-top: 2px;
+ }
+ #navbarnew{
+  width: 100%;
+  position: fixed;
+  display: flex;
+  justify-content: space-evenly;
+  z-index: 50;
+ }
+
+ #signup_main{
+
+  height: 490px;
+  box-shadow: 2px 5px 5px 2px grey;
+ }
+
+ #signin{
+  margin: 50px;
+ }
+
+ #button-card{
+  width: 100px;
+  height: 40px;
+  border: 2px solid black;
+  font-size: 15 px;
+  font-family: 20px;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+ }
+
+ #cart-data{
+  margin-left: 250px;
+  display: block;
+
+ }
+ #cart-details{
+  margin-left: 1000px;
+  display: block;
+ }
+ #cart-main{
+  margin-top: 40px;
+  display: block;
+ }
+
+ #cart-remove-btn{
+  
+  width: 50px;
+  height: 20px;
+  margin-top: 40px;
+ }
+ #cart-remove-icon{
+  
+  width: 50px;
+  height: 20px;
+  margin-top: 40px;
+ }
+
+ #cart-data-section2{
+  margin-left: 100px;
+ }
