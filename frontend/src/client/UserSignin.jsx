@@ -23,7 +23,8 @@ export default function UserSignin() {
   async function savedata(){
 
      let result = await axios.post('http://localhost:3000/api/clientLogin',user)
-    if(result.data==true){
+     localStorage.setItem('token', result.data.token);
+    if(result.data.isMatch == true){
       createUserCart(user.username)
       navigation('/')
     }
