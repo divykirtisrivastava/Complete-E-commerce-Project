@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useContext } from 'react'
-import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
+import React, { useContext, useEffect, useState } from 'react'
+import { Menu, X, ChevronDown, ChevronRight, Flag } from 'lucide-react'
 import '../App.css'
 import {Link} from 'react-router-dom'
 import UserContext from '../context/Usercontext'
+import axios from 'axios'
 
 const menuItems = [
   {
@@ -29,8 +30,28 @@ export default function NavbarNew() {
   }
 
   let {cart} = useContext(UserContext)
-console.log(cart)
-  let user = ''
+  let {auth, logout} = useContext(UserContext)
+let [data, setData] = useState([])
+let [show, setShow] = useState(false)
+useEffect(()=>{
+  getDetails()
+},[auth, logout])
+async function getDetails(){
+  if(auth.isAuthenticated){
+    let result = await axios.get(`http://localhost:3000/api/getDetails/${auth.user}`)
+    setData(result.data)
+  }
+}
+function userLogout(){
+  logout()
+  window.location.reload()
+}
+
+function displayProfile(){
+setShow(!show)
+}
+
+
   return (
     <>
       <div id='navbarnew'>
@@ -73,7 +94,7 @@ console.log(cart)
               </Link>
               <Link
                 type="button"
-                to={`${user ? user : '/cart'}`}
+                to='/cart'
                 // onClick={handleclick}
                 className="rounded-md relative  border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
@@ -81,6 +102,26 @@ console.log(cart)
               </Link>
               {/* <span>{size}</span> */}
             </div>
+             {data.map((data)=>(
+               <div className="ml-5 mt-2 hidden lg:block relative" onClick={displayProfile}>
+               <span className="relative inline-block">
+                 <img
+                   className="h-10 w-10 rounded-full"
+                   src={`http://localhost:3000/${data.userImage}`}
+                 />
+                 <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-600 ring-2 ring-white"></span>
+               </span>
+               <div className='w-[140px] h-[180px] rounded-[20px] bg-gray-200 absolute left-[-50px] flex flex-col justify-around items-center'style={{display: show ? "flex" : 'none'}}> 
+               <img
+                   className="h-16 w-16 rounded-full"
+                   src={`http://localhost:3000/${data.userImage}`}
+                 />
+                 <h1 className='text-2xl font-bold uppercase'>{data.username}</h1>
+                 <button className='p-2 bg-red-400 rounded-[10px] text-white text-[15px] font-bold' onClick={userLogout}>Logout</button>
+             </div></div>
+              
+             ))}
+             
             <div className="lg:hidden">
               <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
             </div>

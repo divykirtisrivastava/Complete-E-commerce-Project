@@ -2,6 +2,10 @@ const db = require('../dataBaseConfig');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const generateToken = (user) => {
+    return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+};
+
 exports.saveClient =async (req, res) => {
     const { username,email, password } = req.body;
     let hash = await bcrypt.hash(password, 10)
@@ -23,12 +27,33 @@ exports.clientLogin = (req, res) => {
        if(results.length > 0){
         bcrypt.compare(password, results[0].password, (err, isMatch) => {
             if (err) throw err
-            const token = jwt.sign({ id: results[0].id }, 'secretkey', { expiresIn: '30s' });
+            const token = generateToken(results[0]);
             res.json({ token , isMatch});
         });
     }
     });
 }
+
+
+exports.profile = (req, res) => {
+    const token = req.headers['authorization'].split(' ')[1];
+    if (!token) {
+        return res.status(401).send('Access denied');
+    }
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    
+        if (err) {
+            return res.status(400).send('Invalid token');
+        }
+        db.query('SELECT * FROM clientdetail WHERE id = ?', [decoded.id], (err, results) => {
+            if (err) {
+                return res.status(500).send('Database error');
+            }
+            res.status(200).json(results[0]);
+        });
+    });
+}
+
 
 exports.createUserCart = (req, res)=>{
     let username = req.params.username
@@ -48,4 +73,15 @@ exports.createUserCart = (req, res)=>{
             res.send(true)
         }
     })
+}
+exports.getClientDetails = (req, res) => {
+    let username = req.params.username
+    let sql = 'SELECT * FROM clientdetail WHERE username = ?'
+    db.query(sql, [username], (err, results) => {
+        if(err) throw err
+      else{
+        res.json(results)
+      }
+    })
+    
 }

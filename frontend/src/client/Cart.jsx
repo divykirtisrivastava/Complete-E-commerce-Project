@@ -10,13 +10,13 @@ export function Cart() {
 
   let [user,setUser]=useState([])
 let {setCart} = useContext(UserContext)
-let {release} = useContext(UserContext)
+let {auth} = useContext(UserContext)
 useEffect(()=>{
   viewcart()
-},[user])
+},[auth])
   async function viewcart(){
-    if(release){
-      let response = await axios.get(`http://localhost:3000/api/getCart/${release}`)
+    if(auth.isAuthenticated){
+      let response = await axios.get(`http://localhost:3000/api/getCart/${auth.user}`)
     setUser(response.data) 
     setCart(response.data.length)
     }
@@ -24,7 +24,7 @@ useEffect(()=>{
   }
  
   async function deletedata(id){
-    await axios.delete(`http://localhost:3000/api/deleteCart/${release}/${id}`)
+    await axios.delete(`http://localhost:3000/api/deleteCart/${auth.user}/${id}`)
     viewcart()
   }
 

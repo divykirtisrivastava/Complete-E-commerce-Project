@@ -8,7 +8,7 @@ export default function Card() {
   let [user, setUser] = useState([])
   let [inp, setInp] = useState('')
 
-  let {release} = useContext(UserContext)
+  let {auth} = useContext(UserContext)
   let navigation = useNavigate()
 
   useEffect(()=>{
@@ -25,8 +25,8 @@ export default function Card() {
   let {setCart} = useContext(UserContext)
 
   async function printCartNumber(){
-    if(release){
-      let result = await axios.get(`http://localhost:3000/api/getCart/${release}`)
+    if(auth.isAuthenticated){
+      let result = await axios.get(`http://localhost:3000/api/getCart/${auth.user}`)
     // setUser(response.data)
     setCart(result.data.length)
   }
@@ -95,9 +95,9 @@ export default function Card() {
   }
 
   const addcart = async(user)=>{
-    if(release){
+    if(auth.isAuthenticated){
       try{
-        const response = await axios.post(`http://localhost:3000/api/saveCart/${release}`,{
+        const response = await axios.post(`http://localhost:3000/api/saveCart/${auth.user}`,{
           productBrand:user.productBrand,
           productType:user.productType,
           productRating:user.productRating,
@@ -105,7 +105,7 @@ export default function Card() {
           productImage:user.productImage
         });
         console.log('Product added to mysql' , response.data)
-        let result = await axios.get(`http://localhost:3000/api/getCart/${release}`)
+        let result = await axios.get(`http://localhost:3000/api/getCart/${auth.user}`)
         // setUser(response.data)
         setCart(result.data.length)
       }

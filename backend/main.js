@@ -1,7 +1,7 @@
 const express = require('express')
 const db = require('./dataBaseConfig');
 const cors = require('cors')
-
+require('dotenv').config();
 const bodyParser = require('body-parser')
 const app = express()
 const productRoutes = require('./routes/productRoutes');
@@ -88,6 +88,6 @@ app.use('/api', cartRoutes);
 // client routes
 app.use('/api', clientRoutes);
 
-app.listen(3000, () => {
-    console.log('server running on port 3000')
+app.listen(process.env.PORT, () => {
+    console.log(`server running on port ${process.env.PORT}`)
 })

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../App.css'
@@ -18,13 +18,12 @@ export default function UserSignin() {
     setUser({...user,[e.target.name]:e.target.value})
   }
 
-  let {setRelease}=useContext(UserContext)
+  let {auth, login}=useContext(UserContext)
 
   async function savedata(){
-
-     let result = await axios.post('http://localhost:3000/api/clientLogin',user)
-     localStorage.setItem('token', result.data.token);
-    if(result.data.isMatch == true){
+   let result = await login(user.username, user.password)
+   console.log(result)
+    if(result == true){
       createUserCart(user.username)
       navigation('/')
     }
@@ -33,11 +32,14 @@ export default function UserSignin() {
     }
   }
 
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`;
+    }
+}, [auth]);
+
   async function createUserCart(username){
-    let result = await axios.post(`http://localhost:3000/api/createUserCart/${username}`)
-   if(result.data == true){
-    setRelease(username)
-   }
+     await axios.post(`http://localhost:3000/api/createUserCart/${username}`)
   }
   
   return (
