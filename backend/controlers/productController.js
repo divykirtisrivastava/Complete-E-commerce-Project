@@ -37,7 +37,6 @@ exports.updateProduct = (req, res) => {
     })
 }
 
-
 exports.uploadFile = (req, res) => {
     const { productBrand,productType, productPrice, productRating } = req.body;
     const productImage = req.file.filename;
@@ -49,7 +48,6 @@ exports.uploadFile = (req, res) => {
     });
   };
   
-
 exports.productSearch = (req, res) => {
     let data = req.params.value
     let sql = "select * from product where productBrand like ? "
@@ -60,7 +58,6 @@ exports.productSearch = (req, res) => {
         }
     })
 }
-
 
 exports.productDelete =  (req, res) => {
     let id = req.params.id

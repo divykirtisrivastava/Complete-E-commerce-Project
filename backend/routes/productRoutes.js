@@ -16,6 +16,4 @@ router.get('/productSearch/:value', productController.productSearch);
 
 router.delete('/productDelete/:id', productController.productDelete);
 
-// Define other product-related routes...
-
 module.exports = router;

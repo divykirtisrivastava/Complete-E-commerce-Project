@@ -34,7 +34,6 @@ exports.clientLogin = (req, res) => {
     });
 }
 
-
 exports.profile = (req, res) => {
     const token = req.headers['authorization'].split(' ')[1];
     if (!token) {
@@ -53,7 +52,6 @@ exports.profile = (req, res) => {
         });
     });
 }
-
 
 exports.createUserCart = (req, res)=>{
     let username = req.params.username
@@ -74,6 +72,7 @@ exports.createUserCart = (req, res)=>{
         }
     })
 }
+
 exports.getClientDetails = (req, res) => {
     let username = req.params.username
     let sql = 'SELECT * FROM clientdetail WHERE username = ?'

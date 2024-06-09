@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import UserContext from '../context/Usercontext'
 
-export default function Card() {
+export default function HomePage() {
   let [user, setUser] = useState([])
   let [inp, setInp] = useState('')
 
@@ -88,10 +88,17 @@ export default function Card() {
     setUser(result)
     
   }
+  useEffect(()=>{
+    search()
+    if(inp == ''){
+      viewdata()
+    }
+  }, [inp])
   async function search() {
-
+   if(inp){
     let response = await axios.get(`http://localhost:3000/api/productSearch/${inp}`)
-    setUser(response.data)
+    setUser(response.data)  
+   }
   }
 
   const addcart = async(user)=>{
@@ -147,12 +154,12 @@ export default function Card() {
 
 
 
-                <button
+                {/* <button
                   className="flex transform items-center rounded-lg px-3 py-2 text-gray-200 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
                 onClick={search}
                 >
                   <span className="mx-2 text-sm font-medium">search</span>
-                </button>
+                </button> */}
                 <button
                   className="flex transform items-center rounded-lg px-3 py-2 text-gray-200 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
                  onClick={All}

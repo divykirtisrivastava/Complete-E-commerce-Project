@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session');
 const db = require('./dataBaseConfig');
 const cors = require('cors')
 require('dotenv').config();
@@ -8,10 +9,19 @@ const productRoutes = require('./routes/productRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const clientRoutes = require('./routes/clientRoutes');
+// goggle auth
+const passport = require('passport');
+const authRoutes  =require('./authRoutes')
+
 app.use(express.json())
 app.use(express.static('uploads'))
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(session({
+  secret: 'hello',
+  resave: true,
+  saveUninitialized: true,
+}));
 
 db.connect((err) => {
     if (err) throw err 
@@ -21,7 +31,7 @@ db.connect((err) => {
 })
 
 
-const createTableQuery = `
+const createProductQuery = `
   CREATE TABLE IF NOT EXISTS product (
     id INT AUTO_INCREMENT PRIMARY KEY,
     productType VARCHAR(255) NOT NULL,
@@ -32,12 +42,12 @@ const createTableQuery = `
   )
 `;
 
-db.query(createTableQuery, (err, result) => {
+db.query(createProductQuery, (err, result) => {
     if (err) {
       console.error('Error creating table:', err);
       return;
     }
-    console.log('Table created successfully:');
+    console.log('Product Table created successfully:');
   });
 const createCartTable = `
   CREATE TABLE IF NOT EXISTS cart (
@@ -55,7 +65,7 @@ db.query(createCartTable, (err, result) => {
       console.error('Error creating table:', err);
       return;
     }
-    console.log('Table created successfully:');
+    console.log('Cart Table created successfully:');
   });
 const clientTable = `
   CREATE TABLE IF NOT EXISTS clientDetail (
@@ -72,7 +82,7 @@ db.query(clientTable, (err, result) => {
       console.error('Error creating table:', err);
       return;
     }
-    console.log('Table created successfully:');
+    console.log('Client Table created successfully:');
   });
 
 
@@ -87,6 +97,13 @@ app.use('/api', cartRoutes);
 
 // client routes
 app.use('/api', clientRoutes);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routes
+app.use('/auth', authRoutes);
+
 
 app.listen(process.env.PORT, () => {
     console.log(`server running on port ${process.env.PORT}`)

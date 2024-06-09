@@ -28,7 +28,6 @@ exports.saveCart = (req, res) => {
     })
 }
 
-
 exports.deleteCart = (req, res) => {
     let username = req.params.username
     let id = req.params.id

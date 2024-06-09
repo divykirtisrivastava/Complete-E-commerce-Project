@@ -3,32 +3,32 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import Layout from './Layout.jsx'
-import Table from './components/Table'
-import Signup from './components/Signup'
-import View from './components/View'
+import Table from './admin/Table.jsx'
+import Signup from './admin/Signup.jsx'
+import View from './admin/View.jsx'
 
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
-import Update from './components/Update.jsx'
-import Card from './client/Card.jsx'
-import Signin from './components/Signin.jsx'
-import Protected from './components/Protected.jsx'
+import Update from './admin/Update.jsx'
+import Signin from './admin/Signin.jsx'
+import Protected from './admin/Protected.jsx'
 import { Cart } from './client/Cart.jsx'
 import ClientSignup from './client/ClientSignup.jsx'
 import UserSignin from './client/UserSignin.jsx'
+import HomePage from './client/HomePage.jsx'
 
 
 
 
 
-let user = ''
+
 const router = createBrowserRouter(
   createRoutesFromElements(
 <>
-<Route path={user ? user : '/'} element={<App/>}>
-  <Route path='' element={<Card/>}/>
-  <Route path={`${user}/cart`} element={<Cart/>}/>
-  <Route path={`${user}/usersignup`} element={<ClientSignup/>}/>
-  <Route path={`${user}/usersignin`} element={<UserSignin/>}/>
+<Route path='/' element={<App/>}>
+  <Route path='' element={<HomePage/>}/>
+  <Route path={`/cart`} element={<Cart/>}/>
+  <Route path={`/usersignup`} element={<ClientSignup/>}/>
+  <Route path={`/usersignin`} element={<UserSignin/>}/>
 
 </Route>
 
