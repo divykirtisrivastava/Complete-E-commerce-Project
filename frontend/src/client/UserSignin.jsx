@@ -8,11 +8,11 @@ import UserContext from '../context/Usercontext'
 export default function UserSignin() {
   let navigation = useNavigate()
   let [user, setUser] = useState({
-    username: '',
+    email: '',
     password: ''
   })
 
-  let { username, password } = user
+  let { email, password } = user
 
   function handleSubmit(e) {
     setUser({ ...user, [e.target.name]: e.target.value })
@@ -21,14 +21,17 @@ export default function UserSignin() {
   let { auth, login } = useContext(UserContext)
 
   async function savedata() {
-    let result = await login(user.username, user.password)
+    let result = await login(user.email, user.password)
     console.log(result)
     if (result === true) {
-      createUserCart(user.username)
       navigation('/')
+      createUserCart(user.email.split('@')[0])
     } else {
       alert('wrong details')
     }
+  }
+  async function createUserCart(username) {
+    await axios.post(`http://localhost:3000/api/createUserCart/${username}`)
   }
 
   useEffect(() => {
@@ -37,26 +40,11 @@ export default function UserSignin() {
     }
   }, [auth])
 
-  async function createUserCart(username) {
-    await axios.post(`http://localhost:3000/api/createUserCart/${username}`)
-  }
 
   const handleGoogleSignIn = () => {
     window.location.href = 'http://localhost:3000/auth/google'
   }
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search)
-    const token = queryParams.get('token')
-    if (token) {
-      localStorage.setItem('token', token)
-      // Clear the token from the URL
-      window.history.replaceState(null, null, window.location.pathname)
-      navigation('/')
-    }
-  }, [navigation])
-
-  
   return (
     <section id='signin'>
       <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -69,15 +57,15 @@ export default function UserSignin() {
                 <div>
                   <label htmlFor="" className="text-base font-medium text-gray-900">
                     {' '}
-                    username{' '}
+                    Email{' '}
                   </label>
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="text"
-                      placeholder="username"
-                      name='username'
-                      value={username}
+                      type="email"
+                      placeholder="email"
+                      name='email'
+                      value={email}
                       onChange={(e)=>handleSubmit(e)}
                     ></input>
                   </div>

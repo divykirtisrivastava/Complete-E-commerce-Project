@@ -8,19 +8,20 @@ export default function HomePage() {
   let [user, setUser] = useState([])
   let [inp, setInp] = useState('')
 
-  let {auth, getGoogleProfile} = useContext(UserContext)
+  let {auth, getGogleProfile} = useContext(UserContext)
   let navigation = useNavigate()
+  
+    let { ID } = useParams()
+    let {token} = useParams()
 
   useEffect(()=>{
     viewdata()
-  },[])
-
-  let { ID } = useParams()
-  let {token} = useParams()
+    printCartNumber()
+  },[auth])
 useEffect(()=>{
   if(token){
     localStorage.setItem('token', token)
-    getGoogleProfile()
+    getGogleProfile()
     navigation('/')
   }
 }, [token])
@@ -33,14 +34,13 @@ useEffect(()=>{
   let {setCart} = useContext(UserContext)
 
   async function printCartNumber(){
-    if(auth.isAuthenticated){
-      let username = auth.user
+    if(auth.user){
       let result = await axios.get(`http://localhost:3000/api/getCart/${auth.user}`)
     // setUser(response.data)
     setCart(result.data.length)
   }
   }
-  printCartNumber()///?
+ 
 
   
   function All(){
@@ -120,7 +120,6 @@ useEffect(()=>{
           productPrice:user.productPrice,
           productImage:user.productImage
         });
-        console.log('Product added to mysql' , response.data)
         let result = await axios.get(`http://localhost:3000/api/getCart/${auth.user}`)
         // setUser(response.data)
         setCart(result.data.length)

@@ -19,10 +19,10 @@ exports.saveClient =async (req, res) => {
   };
 
 exports.clientLogin = (req, res) => {
-    let username = req.body.username
+    let email = req.body.email
     let password = req.body.password
-    let sql = 'SELECT * FROM clientdetail WHERE username = ?'
-    db.query(sql, [username], (err, results) => {
+    let sql = 'SELECT * FROM clientdetail WHERE email = ?'
+    db.query(sql, [email], (err, results) => {
         if(err) throw err
        if(results.length > 0){
         bcrypt.compare(password, results[0].password, (err, isMatch) => {
@@ -73,9 +73,9 @@ exports.createUserCart = (req, res)=>{
 }
 
 exports.getClientDetails = (req, res) => {
-    let username = req.params.username
-    let sql = 'SELECT * FROM clientdetail WHERE username = ?'
-    db.query(sql, [username], (err, results) => {
+    let id = req.params.id
+    let sql = 'SELECT * FROM clientdetail WHERE id = ?'
+    db.query(sql, [id], (err, results) => {
         if(err) throw err
       else{
         res.json(results)

@@ -37,8 +37,8 @@ useEffect(()=>{
   getDetails()
 },[auth, logout])
 async function getDetails(){
-  if(auth.isAuthenticated){
-    let result = await axios.get(`http://localhost:3000/api/getDetails/${auth.user}`)
+  if(auth.id){
+    let result = await axios.get(`http://localhost:3000/api/getDetails/${auth.id}`)
     setData(result.data)
   }
 }
@@ -102,19 +102,19 @@ setShow(!show)
               </Link>
               {/* <span>{size}</span> */}
             </div>
-             {data.map((data)=>(
-               <div className="ml-5 mt-2 hidden lg:block relative" onClick={displayProfile}>
+             {data.map((data,key)=>(
+               <div className="ml-5 mt-2 hidden lg:block relative" onClick={displayProfile} key={key}>
                <span className="relative inline-block">
                  <img
                    className="h-10 w-10 rounded-full"
-                   src={`http://localhost:3000/${data.userImage}`}
+                   src={data.googleId ? `${data.userImage}` : `http://localhost:3000/${data.userImage}` }
                  />
                  <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-600 ring-2 ring-white"></span>
                </span>
                <div className='w-[140px] h-[180px] rounded-[20px] bg-gray-200 absolute left-[-50px] flex flex-col justify-around items-center'style={{display: show ? "flex" : 'none'}}> 
                <img
                    className="h-16 w-16 rounded-full"
-                   src={`http://localhost:3000/${data.userImage}`}
+                   src={data.googleId ? `${data.userImage}` : `http://localhost:3000/${data.userImage}` }
                  />
                  <h1 className='text-2xl font-bold uppercase'>{data.username}</h1>
                  <button className='p-2 bg-red-400 rounded-[10px] text-white text-[15px] font-bold' onClick={userLogout}>Logout</button>

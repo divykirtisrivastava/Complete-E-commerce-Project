@@ -11,6 +11,6 @@ router.post('/createUserCart/:username', clientController.createUserCart)
 
 router.get('/profile', clientController.profile)
 
-router.get('/getDetails/:username', clientController.getClientDetails)
+router.get('/getDetails/:id', clientController.getClientDetails)
 
 module.exports = router;
