@@ -8,7 +8,7 @@ export default function HomePage() {
   let [user, setUser] = useState([])
   let [inp, setInp] = useState('')
 
-  let {auth} = useContext(UserContext)
+  let {auth, getGoogleProfile} = useContext(UserContext)
   let navigation = useNavigate()
 
   useEffect(()=>{
@@ -16,6 +16,14 @@ export default function HomePage() {
   },[])
 
   let { ID } = useParams()
+  let {token} = useParams()
+useEffect(()=>{
+  if(token){
+    localStorage.setItem('token', token)
+    getGoogleProfile()
+    navigation('/')
+  }
+}, [token])
 
   async function viewdata() {
     let response = await axios.get('http://localhost:3000/api/products')
@@ -26,6 +34,7 @@ export default function HomePage() {
 
   async function printCartNumber(){
     if(auth.isAuthenticated){
+      let username = auth.user
       let result = await axios.get(`http://localhost:3000/api/getCart/${auth.user}`)
     // setUser(response.data)
     setCart(result.data.length)

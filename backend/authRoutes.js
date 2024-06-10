@@ -4,7 +4,7 @@ const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-const db = require('./dataBaseConfig');
+const db = require('./dataBaseConfig'); // Corrected path
 
 // Google OAuth Strategy
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -17,10 +17,16 @@ passport.use(new GoogleStrategy({
   try {
     // Check if user exists in database, if not, create new user
     let sql = 'SELECT * FROM clientdetail WHERE googleId = ?';
-    db.query(sql, [profile.id], async (err, rows) => {
-      if (err) throw err;
+    db.query(sql, [profile.id], (err, rows) => {
+      if (err) return done(err);
       if (rows.length) {
-        done(null, rows[0]);
+        const user = rows[0];
+        return done(null, {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          userImage: user.userImage,
+        });
       } else {
         const newUser = {
           googleId: profile.id,
@@ -32,9 +38,14 @@ passport.use(new GoogleStrategy({
 
         sql = 'INSERT INTO clientdetail SET ?';
         db.query(sql, newUser, (err, result) => {
-          if (err) throw err;
+          if (err) return done(err);
           newUser.id = result.insertId;
-          done(null, newUser);
+          done(null, {
+            id: newUser.id,
+            username: newUser.username,
+            email: newUser.email,
+            userImage: newUser.userImage,
+          });
         });
       }
     });
@@ -52,8 +63,14 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   let sql = 'SELECT * FROM clientdetail WHERE id = ?';
   db.query(sql, [id], (err, rows) => {
-    if (err) throw err;
-    done(null, rows[0]);
+    if (err) return done(err);
+    const user = rows[0];
+    done(null, {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      userImage: user.userImage,
+    });
   });
 });
 
@@ -63,8 +80,15 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    const token = jwt.sign(req.user, process.env.JWT_SECRET);
-    res.redirect(`http://localhost:5173?token=${token}`);
+    const user = req.user;
+    const payload = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      userImage: user.userImage,
+    };
+    const token = jwt.sign(payload, process.env.JWT_SECRET);
+    res.redirect(`http://localhost:5173/${token}`);
   }
 );
 

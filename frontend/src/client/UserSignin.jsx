@@ -6,44 +6,56 @@ import axios from 'axios'
 import UserContext from '../context/Usercontext'
 
 export default function UserSignin() {
-  let navigation=useNavigate()
-  let [user,setUser] = useState({
-    username:'',
-    password:''
+  let navigation = useNavigate()
+  let [user, setUser] = useState({
+    username: '',
+    password: ''
   })
 
-  let {username,password}=user
+  let { username, password } = user
 
-  function handleSubmit(e){
-    setUser({...user,[e.target.name]:e.target.value})
+  function handleSubmit(e) {
+    setUser({ ...user, [e.target.name]: e.target.value })
   }
 
-  let {auth, login}=useContext(UserContext)
+  let { auth, login } = useContext(UserContext)
 
-  async function savedata(){
-   let result = await login(user.username, user.password)
-   console.log(result)
-    if(result == true){
+  async function savedata() {
+    let result = await login(user.username, user.password)
+    console.log(result)
+    if (result === true) {
       createUserCart(user.username)
       navigation('/')
-    }
-    else{
+    } else {
       alert('wrong details')
     }
   }
 
   useEffect(() => {
     if (auth.isAuthenticated) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`
     }
-}, [auth]);
+  }, [auth])
 
-  async function createUserCart(username){
-     await axios.post(`http://localhost:3000/api/createUserCart/${username}`)
+  async function createUserCart(username) {
+    await axios.post(`http://localhost:3000/api/createUserCart/${username}`)
   }
+
   const handleGoogleSignIn = () => {
-    window.location.href = 'http://localhost:3000/auth/google';
-  };
+    window.location.href = 'http://localhost:3000/auth/google'
+  }
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search)
+    const token = queryParams.get('token')
+    if (token) {
+      localStorage.setItem('token', token)
+      // Clear the token from the URL
+      window.history.replaceState(null, null, window.location.pathname)
+      navigation('/')
+    }
+  }, [navigation])
+
   
   return (
     <section id='signin'>

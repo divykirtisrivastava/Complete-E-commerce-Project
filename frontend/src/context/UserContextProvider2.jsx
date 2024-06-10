@@ -36,6 +36,24 @@ const getProfile = async () => {
       }
   }
 };
+const getGoogleProfile = async () => {
+  const token = localStorage.getItem('token');
+  if (token) {
+      try {
+          const response = await axios.get('http://localhost:3000/api/profile', {
+              headers: { 'Authorization': `Bearer ${token}` }
+          });
+          
+          setAuth({token:token, isAuthenticated: true, user: response.data.email.split('@')[0] });
+          createUserCart(response.data.email.split('@')[0])
+      } catch (error) {
+          logout();
+      }
+  }
+};
+async function createUserCart(username) {
+  await axios.post(`http://localhost:3000/api/createUserCart/${username}`)
+}
 
 useEffect(() => {
   const token = localStorage.getItem('token');
@@ -45,7 +63,7 @@ useEffect(() => {
   }
 }, []);
     return(
-       <UserContext.Provider value={{cart,setCart, auth, login, logout}}>
+       <UserContext.Provider value={{cart,setCart, auth, login, logout, getGoogleProfile}}>
          {children}
        </UserContext.Provider>
     )

@@ -55,7 +55,6 @@ exports.profile = (req, res) => {
 
 exports.createUserCart = (req, res)=>{
     let username = req.params.username
-    console.log(username)
     let sql = `CREATE TABLE IF NOT EXISTS ${username} (
         id INT AUTO_INCREMENT PRIMARY KEY,
         productType VARCHAR(255) NOT NULL,
