@@ -36,6 +36,7 @@ let [show, setShow] = useState(false)
 useEffect(()=>{
   getDetails()
 },[auth, logout])
+
 async function getDetails(){
   if(auth.id){
     let result = await axios.get(`http://localhost:3000/api/getDetails/${auth.id}`)
