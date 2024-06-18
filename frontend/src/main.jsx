@@ -15,6 +15,7 @@ import { Cart } from './client/Cart.jsx'
 import ClientSignup from './client/ClientSignup.jsx'
 import UserSignin from './client/UserSignin.jsx'
 import HomePage from './client/HomePage.jsx'
+import Checkout from './client/Checkout.jsx'
 
 
 
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
   <Route path='' element={<HomePage/>}/>
   <Route path='/:token' element={<HomePage/>}/>
   <Route path='/cart' element={<Cart/>}/>
+  <Route path='/checkout' element={<Checkout/>}/>
   <Route path='/usersignup' element={<ClientSignup/>}/>
   <Route path='/usersignin' element={<UserSignin/>}/>
 

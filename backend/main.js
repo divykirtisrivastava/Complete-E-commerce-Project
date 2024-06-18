@@ -5,13 +5,17 @@ const cors = require('cors')
 require('dotenv').config();
 const bodyParser = require('body-parser')
 const app = express()
+
+// All Routes
 const productRoutes = require('./routes/productRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const clientRoutes = require('./routes/clientRoutes');
+const paymentRoute = require('./routes/paymentRoute');
 // goggle auth
 const passport = require('passport');
 const authRoutes  =require('./authRoutes')
+
 
 app.use(express.json())
 app.use(express.static('uploads'))
@@ -97,6 +101,8 @@ app.use('/api', cartRoutes);
 
 // client routes
 app.use('/api', clientRoutes);
+
+app.use('/api', paymentRoute);
 
 app.use(passport.initialize());
 app.use(passport.session());

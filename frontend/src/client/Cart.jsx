@@ -83,12 +83,13 @@ let x = user.reduce((x , y)=>x+ JSON.parse(y.productPrice),0)
       >
         Back to shop
       </Link>
-      <button
+      <Link
         type="button"
+        to="/checkout"
         className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
       >
         Checkout
-      </button>
+      </Link>
     </div>
   </div>
   )
