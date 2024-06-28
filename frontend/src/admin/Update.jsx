@@ -15,13 +15,19 @@ export default function Update() {
     productBrand:"",
     productType:"",
     productRating:"",
-    productPrice:""
+    productPrice:"",
+    productImage: ""
 })
-const {productBrand,productType,productRating,productPrice} = user
-
+const {productBrand,productType,productRating,productPrice, productImage} = user
+console.log(productImage)
 
 function handleSubmit(e){
-  setUser({...user,[e.target.name]:e.target.value})
+  const { name, value, files } = e.target
+    if (name === 'productImage') {
+      setUser({ ...user, [name]: files[0] })
+    } else {
+      setUser({ ...user, [name]: value })
+    }
 }
 
 
@@ -33,8 +39,19 @@ async function viewdata() {
 
   
   
-  async function submitdata(){
-    await axios.put(`http://localhost:3000/api/updateProduct/${ID}`,user)
+  async function submitdata(e){
+    e.preventDefault()
+    // const formData = new FormData()
+    // formData.append('productBrand', productBrand)
+    // formData.append('productType', productType)
+    // formData.append('productRating', productRating)
+    // formData.append('productPrice', productPrice)
+    // formData.append('productImage', productImage) 
+    await axios.put(`http://localhost:3000/api/updateProduct/${ID}`,user,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
     navigation('/admin')
   }
 
@@ -98,6 +115,7 @@ async function viewdata() {
                     ></input>
                   </div>
                 </div>
+                
                 <div>
                   <label htmlFor="name" className="text-base font-medium text-gray-900">
                     {' '}
@@ -115,7 +133,19 @@ async function viewdata() {
                     ></input>
                   </div>
                 </div>
-               
+                <div>
+                  <label htmlFor="productImage" className="text-base font-medium text-gray-900">Product Image</label>
+                  <div className="mt-2">
+                    <input
+                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                      type="file"
+                      id="productImage"
+                      name='productImage'
+                      
+                      onChange={handleSubmit}
+                    />
+                  </div>
+                </div>
                 <div>
                   <Link
                     type="submit"

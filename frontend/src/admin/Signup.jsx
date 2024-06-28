@@ -7,22 +7,7 @@ import '../App.css'
 
 export default function Signup() {
   let navigation = useNavigate()
-  // let [user,setUser]=useState({
-  //   product_name:"",
-  //   product_type:"",
-  //   product_rating:"",
-  //   product_price:""
-  // })
-
-  // const {product_name,product_type,product_rating,product_price} = user
-
-  // function handleSubmit(e){
-  //   setUser({...user,[e.target.name]:e.target.value})
-  // }
-  // async function submitdata(){
-  //   await axios.post('http://localhost:3000/submit',user)
-  //   navigation('/')
-  // }
+ 
 
 let [productBrand,setProductBrand]=useState("");
 let [productType,setProductType]=useState("");

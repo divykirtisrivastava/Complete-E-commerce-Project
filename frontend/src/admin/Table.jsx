@@ -62,6 +62,13 @@ export default function Table() {
                       <tr key={key}>
                         <td className="whitespace-nowrap px-4 py-4">
                           <div className="flex items-center">
+                          <div className="h-10 w-10 flex-shrink-0">
+                              <img
+                                className="h-10 w-10 rounded-full object-cover"
+                                src={`http://localhost:3000/${data.productImage}`}
+                                alt=""
+                              />
+                            </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">{data.productBrand}</div>
                             </div>

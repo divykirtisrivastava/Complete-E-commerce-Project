@@ -1,4 +1,5 @@
 const db = require('../dataBaseConfig');
+const path = require('path')
 
 
 exports.getAllProducts = (req, res) =>{
@@ -25,11 +26,19 @@ exports.getProductById =  (req, res) => {
 
 exports.updateProduct = (req, res) => {
     let id = req.params.id
+    const { productBrand,productType, productPrice, productRating } = req.body;
+    let productImage = req.file.filename;
+console.log(productImage)
+    // if (req.file) {
+    //     productImage = req.file.filename;
+    //     console.log(productImage)
+    // } else {
+    //     productImage = req.body.productImage; 
+    //     console.log(productImage)
+    // }
 
-    let newdata = req.body
-
-    let sql = "update product set ? where id = ?"
-    db.query(sql, [newdata, id], (err, result) => {
+    let sql = "update product set productBrand=?, productType=?,productPrice=?,productRating=?,productImage=?  where id = ?"
+    db.query(sql, [ productBrand,productType, productPrice, productRating ,productImage, id], (err, result) => {
         if (err) throw err
         else {
             res.send("update")

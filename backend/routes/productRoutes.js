@@ -6,11 +6,11 @@ const productController = require('../controlers/productController');
 
 router.get('/products', productController.getAllProducts);
 
-router.post('/uploadProduct', upload.single('image'), productController.uploadFile);
+router.post('/uploadProduct', upload.single('productImage'), productController.uploadFile);
 
 router.get('/products/:id', productController.getProductById);
 
-router.put('/updateProduct/:id', productController.updateProduct);
+router.put('/updateProduct/:id', upload.single('productImage'), productController.updateProduct);
 
 router.get('/productSearch/:value', productController.productSearch);
 
