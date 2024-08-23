@@ -13,14 +13,14 @@ let [productBrand,setProductBrand]=useState("");
 let [productType,setProductType]=useState("");
 let [productRating,setProductRating]=useState("");
 let [productPrice,setProductPrice]=useState("");
-let [image,setImage]=useState(null);
+let [productImage,setProductImage]=useState(null);
 
 
 const onSubmit = async (e)=>{
   e.preventDefault();
 
     const user = new FormData();
-  user.append('image', image)
+  user.append('productImage', productImage)
   user.append('productBrand',productBrand)
   user.append('productType',productType)
   user.append('productRating',productRating)
@@ -132,7 +132,8 @@ const onSubmit = async (e)=>{
                       placeholder="Upload file"
                       id="product_price"
                       accept='image/*'
-                      onChange={(e)=>setImage(e.target.files[0])}
+                      name='productImage'
+                      onChange={(e)=>setProductImage(e.target.files[0])}
                     ></input>
                   </div>
                 </div>

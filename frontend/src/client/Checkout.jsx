@@ -54,7 +54,7 @@ export default function Checkout() {
 
 
       var option = {
-        key:"rzp_test_a6Fe90pJfTlvUe",
+        key:"rzp_test_GJHHBFZE4O8Ub6",
         amount,
         currency,
         name:"Web Codder",

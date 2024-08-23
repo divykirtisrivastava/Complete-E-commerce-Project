@@ -8,7 +8,8 @@ const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
-// console.log( process.env.RAZORPAY_KEY_SECRET)
+console.log( process.env.RAZORPAY_KEY_SECRET)
+console.log( process.env.RAZORPAY_KEY_ID)
 exports.createOrder =  async (req, res) => {
   const { amount, currency, receipt } = req.body;
 console.log(req.body)
@@ -30,6 +31,9 @@ console.log(req.body)
 
 exports.verifyPayment =  (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+  console.log(razorpay_order_id)
+  console.log(razorpay_payment_id)
+  console.log(razorpay_signature)
 
   const body = razorpay_order_id + '|' + razorpay_payment_id;
   const expectedSignature = crypto

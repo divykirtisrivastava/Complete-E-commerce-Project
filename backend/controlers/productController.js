@@ -49,9 +49,10 @@ console.log(productImage)
 exports.uploadFile = (req, res) => {
     const { productBrand,productType, productPrice, productRating } = req.body;
     const productImage = req.file.filename;
-    const query = 'INSERT INTO product ( productBrand,productType, productPrice, productRating, productImage) VALUES (?,?,?,?,?)';
-    const values = [ productBrand,productType, productPrice, productRating, productImage];
-    db.query(query, values, (err, result) => {
+    console.log(productImage)
+    const query = 'INSERT INTO product ( productBrand,productType, productPrice, productRating, productImage) VALUES ?';
+    const values = [[ productBrand,productType, productPrice, productRating, productImage]];
+    db.query(query, [values], (err, result) => {
       if (err) throw err
       res.send('Data inserted successfully');
     });
